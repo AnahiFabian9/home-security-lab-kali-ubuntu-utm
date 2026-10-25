@@ -46,23 +46,23 @@ Both VMs use UTM's **Shared Network** mode (192.168.64.0/24). They can talk to e
 
 **Kali running after login:**
 
-![Kali desktop after login](images/01-kali-desktop.png)
+![Kali desktop after login](01-kali-desktop.png)
 
 **Ubuntu-Target's address (192.168.64.3):**
 
-![Ubuntu ip a output](images/02-ubuntu-ip-a.png)
+![Ubuntu ip a output](02-ubuntu-ip-a.png)
 
 **Ping from Kali to Ubuntu:**
 
-![Ping from Kali to Ubuntu](images/03-ping-kali-to-ubuntu.png)
+![Ping from Kali to Ubuntu](03-ping-kali-to-ubuntu.png)
 
 **SSH login from Kali into Ubuntu:**
 
-![SSH login to Ubuntu](images/04-ssh-login.png)
+![SSH login to Ubuntu](04-ssh-login.png)
 
 **The four VMs in UTM, with clean backups:**
 
-![UTM VM list](images/07-utm-vm-list.png)
+![UTM VM list](07-utm-vm-list.png)
 
 ## Problems I ran into and how I fixed them
 
@@ -88,13 +88,13 @@ Both VMs use UTM's **Shared Network** mode (192.168.64.0/24). They can talk to e
 
 **Symptom:** `ping 8.8.8.8` failed with `Network is unreachable`, and `apt update` reported a repository error. `ip a` showed that `eth0` was up but had only IPv6 addresses and **no IPv4 address**.
 
-![Network is unreachable](images/05-network-unreachable.png)
+![Network is unreachable](05-network-unreachable.png)
 
 **Investigation:** `nmcli device status` showed `eth0` as externally managed or unmanaged, and `/etc/network/interfaces` contained an old IPv6-only entry for `eth0`. NetworkManager was not requesting an IPv4 address for the interface.
 
 **Fix:** I commented out the old IPv6-only `eth0` entry in `/etc/network/interfaces`, set NetworkManager to manage network interfaces (`managed=true`), and restarted NetworkManager. `eth0` then received `192.168.64.5` by DHCP from UTM's shared network, `ping 8.8.8.8` succeeded, and `apt update` worked.
 
-![Network fixed](images/06-network-fixed.png)
+![Network fixed](06-network-fixed.png)
 
 **Lesson:** I worked from the symptom down: check the interface (`ip a`), then the network manager (`nmcli`), then the config files. I also learned to back up a config file before editing it.
 
