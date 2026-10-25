@@ -106,8 +106,3 @@ Both VMs use UTM's **Shared Network** mode (192.168.64.0/24). They can talk to e
 - Network troubleshooting with a symptom-to-cause method
 - Documenting a technical project
 
-## What's next
-
-- Firewall project: configure and test a host firewall on Ubuntu-Target
-- Vulnerability scan and report with Nmap
-- Log monitoring in a SIEM
